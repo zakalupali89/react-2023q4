@@ -6,6 +6,8 @@ import { SEARCH } from './consts';
 import { getPeoples } from './api/people';
 import ResponseApi from './types/api.ts';
 import People from './types/people.ts';
+import ErrorBoundary from './components/error-boundary/ErrorBoundary.tsx';
+import ButtonError from './components/ButtonError.tsx';
 
 type State = {
   defaultValue: string;
@@ -31,22 +33,26 @@ class App extends Component<object, State> {
 
   render() {
     return (
-      <div className="container">
-        <div className="home">
-          <section className="section-search">
-            <div>Type name hero from Star war</div>
-            <Search
-              isLoading={this.state.isLoading}
-              defaultValue={this.state.defaultValue}
-              onChange={this.handleChange}
-            />
-          </section>
+      <ErrorBoundary fallback={<div>Opsss, something went wrong</div>}>
+        <div className="container">
+          <div className="home">
+            <section className="section-search">
+              <div>Type name hero from Star war</div>
+              <Search
+                isLoading={this.state.isLoading}
+                defaultValue={this.state.defaultValue}
+                onChange={this.handleChange}
+              />
 
-          <hr />
+              <ButtonError />
+            </section>
 
-          <Results isLoading={this.state.isLoading} data={this.state.response} />
+            <hr />
+
+            <Results isLoading={this.state.isLoading} data={this.state.response} />
+          </div>
         </div>
-      </div>
+      </ErrorBoundary>
     );
   }
 }

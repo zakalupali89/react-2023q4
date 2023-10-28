@@ -39,6 +39,7 @@ body {
 
 .section-search {
   display: flex;
+  padding: 1rem;
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
