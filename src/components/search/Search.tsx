@@ -1,5 +1,7 @@
-import { Component, FormEvent } from 'react';
+import { FormEvent } from 'react';
 import styles from './Search.module.css';
+
+const SEARCH = 'search';
 
 type Props = {
   defaultValue: string;
@@ -7,23 +9,20 @@ type Props = {
   onChange: (value: string) => Promise<void>;
 };
 
-class Search extends Component<Props> {
-  handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+export default function Search(props: Props) {
+  const { isLoading, defaultValue, onChange } = props;
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    this.props.onChange(e.currentTarget.search.value);
+    const value = (e.currentTarget[SEARCH].value as string).trim();
+    onChange(value);
   };
 
-  render() {
-    const { isLoading, defaultValue } = this.props;
-    return (
-      <form className={styles.form} onSubmit={this.handleSubmit}>
-        <input disabled={isLoading} name="search" defaultValue={defaultValue} />
-        <button disabled={isLoading} type="submit">
-          Search
-        </button>
-      </form>
-    );
-  }
+  return (
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <input disabled={isLoading} name={SEARCH} defaultValue={defaultValue} />
+      <button disabled={isLoading} type="submit">
+        Search
+      </button>
+    </form>
+  );
 }
-
-export default Search;

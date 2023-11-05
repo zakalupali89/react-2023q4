@@ -46,21 +46,6 @@ body {
   height: 30%;
 }
 
-.results {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-}
-
-.results__list {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-}
-
 hr {
   margin: 0;
   align-self: stretch;

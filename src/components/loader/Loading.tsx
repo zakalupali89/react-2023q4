@@ -1,8 +1,16 @@
-import { Component } from 'react';
 import styles from './Loading.module.css';
 
-export default class Loading extends Component {
-  render() {
-    return <div className={styles.container}>Loading...</div>;
-  }
+type Props = {
+  backgroundOpacity: number;
+};
+
+export default function Loading({ backgroundOpacity }: Props) {
+  return (
+    <div
+      className={styles.container}
+      style={{ backgroundColor: `rgba(255,255,255, ${backgroundOpacity})` }}
+    >
+      Loading...
+    </div>
+  );
 }

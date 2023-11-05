@@ -1,23 +1,17 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 
-type State = {
-  isError: boolean;
-};
+export default function ButtonError() {
+  const [isError, setIsError] = useState(false);
 
-export default class ButtonError extends Component<object, State> {
-  state = { isError: false };
-  handleBreak = () => {
-    this.setState({ isError: true });
+  const handleBreak = () => {
+    setIsError(true);
   };
 
-  componentDidUpdate() {
-    console.log(this.state.isError);
-    if (this.state.isError) {
+  useEffect(() => {
+    if (isError) {
       throw new Error('Opsss, something went wrong');
     }
-  }
+  });
 
-  render() {
-    return <button onClick={this.handleBreak}>Break Me Completely</button>;
-  }
+  return <button onClick={handleBreak}>Break Me Completely</button>;
 }

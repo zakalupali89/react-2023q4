@@ -1,3 +1,18 @@
+.container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
 .item {
   padding: 0.5rem;
   border: 2px solid #808080;
