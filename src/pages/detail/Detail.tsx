@@ -23,7 +23,7 @@ export default function Detail() {
   }, [name]);
 
   if (isLoading) {
-    return <Loading backgroundOpacity={0.2} />;
+    return <Loading />;
   }
 
   return (

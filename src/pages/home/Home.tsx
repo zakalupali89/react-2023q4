@@ -6,25 +6,39 @@ import { getPeoples } from '../../api/people';
 import Results from '../../components/results/Results.tsx';
 import ButtonError from '../../components/ButtonError.tsx';
 import Search from '../../components/search/Search.tsx';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './Home.module.css';
+import Loading from '../../components/loader/Loading.tsx';
 
 export default function Home() {
-  const [defaultValue, setDefaultValue] = useState('');
+  const [defaultValue, setDefaultValue] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState<ResponseApi<People> | undefined>(undefined);
   const navigate = useNavigate();
   const { name } = useParams();
+  const [urlSearchParams] = useSearchParams();
+  const page = urlSearchParams.get('page') || '1';
+  const search = urlSearchParams.get(SEARCH) || '';
 
   useEffect(() => {
     const defaultValue = localStorage.getItem(SEARCH) || '';
     setDefaultValue(defaultValue);
     setIsLoading(true);
-    getPeoples(defaultValue).then((response) => {
+    getPeoples(defaultValue, page).then((response) => {
       setResponse(response);
       setIsLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    if (defaultValue !== undefined) {
+      setIsLoading(true);
+      getPeoples(search, page).then((response) => {
+        setResponse(response);
+        setIsLoading(false);
+      });
+    }
+  }, [search, page]);
 
   const handleChange = async (value: string) => {
     localStorage.setItem(SEARCH, value);
@@ -43,7 +57,7 @@ export default function Home() {
       <div className="home">
         <section className={styles.sectionSearch}>
           <div>Type name hero from Star war</div>
-          <Search isLoading={isLoading} defaultValue={defaultValue} onChange={handleChange} />
+          <Search isLoading={isLoading} defaultValue={defaultValue || ''} onChange={handleChange} />
 
           <ButtonError />
         </section>
@@ -51,7 +65,8 @@ export default function Home() {
         <hr />
 
         <div className={styles.bottomContainer}>
-          <Results isLoading={isLoading} data={response} />
+          {isLoading && <Loading />}
+          <Results data={response} />
 
           <section
             className={styles.detail}
