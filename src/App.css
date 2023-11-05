@@ -37,15 +37,6 @@ body {
   max-width: 1200px;
 }
 
-.section-search {
-  display: flex;
-  padding: 1rem;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-  height: 30%;
-}
-
 hr {
   margin: 0;
   align-self: stretch;

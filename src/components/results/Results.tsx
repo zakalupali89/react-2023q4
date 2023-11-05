@@ -3,6 +3,7 @@ import People from '../../types/people.ts';
 import DescriptionField from '../description-field/DescriptionField.tsx';
 import styles from './Results.module.css';
 import Loading from '../loader/Loading.tsx';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   data: ResponseApi<People> | undefined;
@@ -11,23 +12,32 @@ type Props = {
 
 export default function Results(props: Props) {
   const { data, isLoading } = props;
+  const navigate = useNavigate();
+  // const navigation = useNavigation();
+  // const { name } = useParams();
+
+  const handleClick = (id: string) => {
+    const slugName = id.replace(' ', '-');
+    navigate(`/detail/${slugName}`);
+  };
+
   return (
-    <section className={styles.container}>
+    <section className={styles.results}>
       {isLoading && <Loading backgroundOpacity={0.2} />}
-      <div className={styles.results}>
-        {data?.results.length ? (
-          data.results.map((people) => (
-            <div className={styles.item} key={people.name + people.url}>
-              <DescriptionField label="name">{people.name}</DescriptionField>
-              <DescriptionField label="gender">{people.gender}</DescriptionField>
-              <DescriptionField label="eye color">{people.eye_color}</DescriptionField>
-              <DescriptionField label="hair color">{people.hair_color}</DescriptionField>
-            </div>
-          ))
-        ) : (
-          <div>Sorry, I didn't find anything</div>
-        )}
-      </div>
+      {data?.results.length ? (
+        data.results.map((people) => (
+          <div
+            className={styles.item}
+            key={people.name + people.url}
+            onClick={() => handleClick(people.name)}
+          >
+            <DescriptionField label="name">{people.name}</DescriptionField>
+            <DescriptionField label="gender">{people.gender}</DescriptionField>
+          </div>
+        ))
+      ) : (
+        <div>Sorry, I didn't find anything</div>
+      )}
     </section>
   );
 }
